@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  role      String   // "ADMIN" | "CS"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  transactions Transaction[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  sku         String   @unique
+  name        String
+  category    String
+  price       Float
+  stock       Int
+  unit        String   // "Sak", "Batang", "m3", etc.
+  icon        String?  // Emoji or Icon name
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  transactionItems TransactionItem[]
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  totalAmount Float
+  cashierId   Int
+  cashier     User     @relation(fields: [cashierId], references: [id])
+  createdAt   DateTime @default(now())
+
+  items       TransactionItem[]
+}
+
+model TransactionItem {
+  id            Int      @id @default(autoincrement())
+  transactionId Int
+  productId     Int
+  quantity      Int
+  unitPrice     Float    // Price at the time of transaction
+  
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  product       Product     @relation(fields: [productId], references: [id])
+}

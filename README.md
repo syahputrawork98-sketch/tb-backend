@@ -1,6 +1,6 @@
-# 🏗️ StripTB - Backend Engine
+# 🏗️ TB (Toko Bangunan) - Backend Engine
 
-Backend resmi untuk aplikasi **StripTB (Toko Bangunan)**. Repositori ini bertanggung jawab atas pemrosesan data, manajemen stok, dan logika bisnis inti.
+Backend resmi untuk aplikasi **TB (Toko Bangunan)**. Repositori ini bertanggung jawab atas pemrosesan data, manajemen stok, dan logika bisnis inti.
 
 ---
 
@@ -46,4 +46,4 @@ src/
    ```
 
 ---
-> *Maintaining StripTB with High-Rigor Architecture.*
+> *Maintaining TB (Toko Bangunan) with High-Rigor Architecture.*
