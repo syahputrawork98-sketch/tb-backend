@@ -27,6 +27,7 @@ model Product {
   name        String
   category    String
   price       Float
+  costPrice   Float    @default(0)
   stock       Int
   unit        String   // "Sak", "Batang", "m3", etc.
   icon        String?  // Emoji or Icon name

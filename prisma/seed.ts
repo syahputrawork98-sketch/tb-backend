@@ -31,9 +31,9 @@ async function main() {
   // 3. Create Sample Products
   await prisma.product.createMany({
     data: [
-      { sku: 'SEM-TR-001', name: 'Semen Tiga Roda', category: 'Semen', price: 65000, stock: 100, unit: 'Sak', icon: '🧱' },
-      { sku: 'BESI-10-001', name: 'Besi Beton 10mm', category: 'Besi', price: 88000, stock: 50, unit: 'Batang', icon: '🏗️' },
-      { sku: 'CAT-DX-001', name: 'Cat Dulux Putih 5kg', category: 'Cat', price: 210000, stock: 20, unit: 'Pail', icon: '🎨' },
+      { sku: 'SEM-TR-001', name: 'Semen Tiga Roda', category: 'Semen', price: 65000, costPrice: 58000, stock: 100, unit: 'Sak', icon: '🧱' },
+      { sku: 'BESI-10-001', name: 'Besi Beton 10mm', category: 'Besi', price: 88000, costPrice: 75000, stock: 50, unit: 'Batang', icon: '🏗️' },
+      { sku: 'CAT-DX-001', name: 'Cat Dulux Putih 5kg', category: 'Cat', price: 210000, costPrice: 165000, stock: 20, unit: 'Pail', icon: '🎨' },
     ],
   });
 
