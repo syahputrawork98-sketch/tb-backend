@@ -1,49 +1,67 @@
 # 🏗️ TB (Toko Bangunan) - Backend Engine
 
-Backend resmi untuk aplikasi **TB (Toko Bangunan)**. Repositori ini bertanggung jawab atas pemrosesan data, manajemen stok, dan logika bisnis inti.
+Backend resmi untuk aplikasi **TB (Toko Bangunan)**. Repositori ini bertanggung jawab atas pemrosesan data, manajemen stok, dan logika bisnis inti menggunakan arsitektur yang aman dan terstruktur.
 
 ---
 
 ## 🚀 Tech Stack
 - **Runtime**: Node.js
-- **Framework**: Express.js
+- **Framework**: Express.js (v5+)
 - **Language**: TypeScript
-- **Database**: PostgreSQL / MySQL (via Prisma)
-- **Security**: JWT, Helmet, Cors
+- **ORM**: Prisma
+- **Database**: SQLite (Development) / Production Ready
+- **Security**: JWT (Json Web Token), Bcrypt (Password Hashing), CORS (Session-aware)
+
+---
+
+## 🛠️ Main Features (Completed)
+- **🔐 Multi-Role Authentication**: Sistem login aman untuk Admin dan CS dengan proteksi JWT.
+- **📦 Inventory Mastery**: API lengkap untuk manajemen produk (CRUD), kategori, dan kontrol stok.
+- **💰 POS Transaction Engine**: Logika transaksi yang mendukung pengurangan stok otomatis dan pencatatan riwayat.
+- **📊 Advanced Analytics**: Perhitungan laba kotor, statistik harian, dan tren penjualan 7 hari terakhir.
+- **⚙️ Global Configuration**: Pengaturan identitas toko (Alamat, Telp) dan aturan ambang batas stok rendah (*low stock threshold*).
 
 ---
 
 ## 📁 Directory Structure
 ```text
 src/
-├── controllers/    # Request handling & Response management
-├── services/       # Core Business Logic
-├── models/         # Database Schemas (Prisma)
-├── middleware/     # Security & Validation
-├── routes/         # API Endpoint Definitions
-└── utils/          # Helper functions
+├── controllers/    # Request handling & Logic (Auth, Analytics, Products, etc.)
+├── routes/         # API Endpoint definitions
+├── middlewares/    # Auth protection, Role validation, & Global error handling
+├── utils/          # Prisma client and shared helper functions
+└── prisma/         # Database schema and seed scripts
 ```
 
 ---
 
-## 🛠️ Main Features (Roadmap)
-- [ ] **Auth System**: Login & Register (Admin & CS).
-- [ ] **Inventory Hub**: CRUD Material Bangunan & Update Stok.
-- [ ] **Order Processing**: Validasi pesanan & Kalkulasi biaya.
-- [ ] **Reporting**: Laporan harian/bulanan penjualan.
-
----
-
 ## 📡 Getting Started
+
 1. **Installation**:
    ```bash
    npm install
    ```
-2. **Environment**: Salin `.env.example` ke `.env` (jika ada) dan isi variabel yang dibutuhkan.
-3. **Execution**:
+
+2. **Environment Setup**:
+   Buat file `.env` di root folder dan tambahkan:
+   ```env
+   PORT=5000
+   DATABASE_URL="file:./dev.db"
+   JWT_SECRET=your_jwt_secret_key
+   ```
+
+3. **Database & Prisma**:
+   Jalankan perintah berikut untuk mensinkronkan database:
+   ```bash
+   npx prisma migrate dev --name init
+   npx prisma generate
+   npx prisma db seed
+   ```
+
+4. **Execution**:
    ```bash
    npm run dev
    ```
 
 ---
-> *Maintaining TB (Toko Bangunan) with High-Rigor Architecture.*
+> *Maintaining TB (Toko Bangunan) with High-Rigor Architecture. v1.0.0*
