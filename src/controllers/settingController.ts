@@ -4,9 +4,23 @@ import prisma from '../utils/prisma';
 // Get Global Settings
 export const getSettings = async (req: Request, res: Response) => {
   try {
-    const settings = await prisma.setting.findUnique({
+    let settings = await prisma.setting.findUnique({
       where: { id: 1 }
     });
+
+    // Auto-seed if not found
+    if (!settings) {
+      settings = await prisma.setting.create({
+        data: {
+          id: 1,
+          shopName: 'Toko Bangunan (TB)',
+          shopAddress: 'Jl. Raya Industri No. 1',
+          shopPhone: '0812-3456-7890',
+          lowStockThreshold: 10
+        }
+      });
+    }
+
     res.json(settings);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching settings' });
