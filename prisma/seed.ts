@@ -28,7 +28,20 @@ async function main() {
     },
   });
 
-  // 3. Create Sample Products
+  // 3. Initialize Settings
+  await prisma.setting.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      shopName: 'Toko Bangunan (TB)',
+      shopAddress: 'Jl. Raya Industri No. 1, Jakarta',
+      shopPhone: '0812-3456-7890',
+      lowStockThreshold: 10
+    }
+  });
+
+  // 4. Create Sample Products
   await prisma.product.createMany({
     data: [
       { sku: 'SEM-TR-001', name: 'Semen Tiga Roda', category: 'Semen', price: 65000, costPrice: 58000, stock: 100, unit: 'Sak', icon: '🧱' },

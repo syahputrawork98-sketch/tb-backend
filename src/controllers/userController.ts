@@ -44,15 +44,34 @@ export const createUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    
-    // Prevent deleting self? (Optional, but good)
-    // For now, simple delete
     await prisma.user.delete({
       where: { id: Number(id) }
     });
-    
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting user' });
+  }
+};
+
+export const updateProfile = async (req: any, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const { username, password } = req.body;
+    
+    const data: any = {};
+    if (username) data.username = username;
+    if (password) data.password = await bcrypt.hash(password, 10);
+
+    const updated = await prisma.user.update({
+      where: { id: userId },
+      data
+    });
+
+    res.json({
+      message: 'Profile updated successfully',
+      username: updated.username
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating profile' });
   }
 };

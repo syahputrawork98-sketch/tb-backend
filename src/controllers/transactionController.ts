@@ -58,19 +58,24 @@ export const createTransaction = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getTransactions = async (req: AuthRequest, res: Response) => {
+export const getTransactions = async (req: any, res: Response) => {
   try {
     const { startDate, endDate } = req.query;
+    const userId = req.user.id;
+    const userRole = req.user.role;
 
     const where: any = {};
-    if (startDate || endDate) {
-      where.createdAt = {};
-      if (startDate) where.createdAt.gte = new Date(startDate as string);
-      if (endDate) {
-        const end = new Date(endDate as string);
-        end.setHours(23, 59, 59, 999);
-        where.createdAt.lte = end;
-      }
+    
+    // Role-based filtering: CS only sees their own transactions
+    if (userRole === 'CS') {
+      where.cashierId = userId;
+    }
+
+    if (startDate && endDate) {
+      where.createdAt = {
+        gte: new Date(startDate as string),
+        lte: new Date(endDate as string)
+      };
     }
 
     const transactions = await prisma.transaction.findMany({
