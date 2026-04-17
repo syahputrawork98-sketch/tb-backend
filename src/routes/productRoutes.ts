@@ -1,16 +1,13 @@
 import { Router } from 'express';
-import { getProducts, createProduct, updateStock } from '../controllers/productController';
-import { authenticateToken, authorizeRole } from '../middlewares/authMiddleware';
+import { getProducts, createProduct, updateStock, updateProduct, deleteProduct } from '../controllers/productController';
+import { authenticateToken, isAdmin } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// All STAFF can view products
 router.get('/', (authenticateToken as any), (getProducts as any));
-
-// Admin only can create products
-router.post('/', (authenticateToken as any), (authorizeRole(['ADMIN']) as any), (createProduct as any));
-
-// Staff can update stocks
+router.post('/', (authenticateToken as any), (isAdmin as any), (createProduct as any));
+router.patch('/:id', (authenticateToken as any), (isAdmin as any), (updateProduct as any));
+router.delete('/:id', (authenticateToken as any), (isAdmin as any), (deleteProduct as any));
 router.patch('/:id/stock', (authenticateToken as any), (updateStock as any));
 
 export default router;

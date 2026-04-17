@@ -27,7 +27,7 @@ src/
 ---
 
 ## 🛠️ Main Features (Roadmap)
-- [ ] **Auth System**: Login & Register (Admin, User, CS).
+- [ ] **Auth System**: Login & Register (Admin & CS).
 - [ ] **Inventory Hub**: CRUD Material Bangunan & Update Stok.
 - [ ] **Order Processing**: Validasi pesanan & Kalkulasi biaya.
 - [ ] **Reporting**: Laporan harian/bulanan penjualan.

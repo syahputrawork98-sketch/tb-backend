@@ -60,7 +60,21 @@ export const createTransaction = async (req: AuthRequest, res: Response) => {
 
 export const getTransactions = async (req: AuthRequest, res: Response) => {
   try {
+    const { startDate, endDate } = req.query;
+
+    const where: any = {};
+    if (startDate || endDate) {
+      where.createdAt = {};
+      if (startDate) where.createdAt.gte = new Date(startDate as string);
+      if (endDate) {
+        const end = new Date(endDate as string);
+        end.setHours(23, 59, 59, 999);
+        where.createdAt.lte = end;
+      }
+    }
+
     const transactions = await prisma.transaction.findMany({
+      where,
       include: {
         cashier: { select: { username: true } },
         items: { include: { product: true } }
