@@ -21,24 +21,26 @@ export const createTransaction = async (req: AuthRequest, res: Response) => {
         }
       });
 
-      // 2. Create transaction items AND decrement stock
+          // 2. Create transaction items AND decrement stock
       for (const item of items) {
-        // Create the item record
-        await tx.transactionItem.create({
-          data: {
-            transactionId: transaction.id,
-            productId: item.productId,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice
-          }
-        });
-
-        // Decrement the product stock
+        // Fetch current product details to get cost price
         const product = await tx.product.findUnique({ where: { id: item.productId } });
         if (!product || product.stock < item.quantity) {
           throw new Error(`Insufficient stock for product: ${product?.name || item.productId}`);
         }
 
+        // Create the item record WITH costPrice snapshot
+        await tx.transactionItem.create({
+          data: {
+            transactionId: transaction.id,
+            productId: item.productId,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            costPrice: product.costPrice || 0 // SNAPSHOT: Locked for historical accuracy
+          }
+        });
+ 
+        // Decrement the product stock
         await tx.product.update({
           where: { id: item.productId },
           data: { stock: product.stock - item.quantity }

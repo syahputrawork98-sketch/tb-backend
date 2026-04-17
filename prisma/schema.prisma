@@ -53,6 +53,7 @@ model TransactionItem {
   productId     Int
   quantity      Int
   unitPrice     Float    // Price at the time of transaction
+  costPrice     Float    @default(0) // ADDED: Snapshot of cost price at transaction time
   
   transaction   Transaction @relation(fields: [transactionId], references: [id])
   product       Product     @relation(fields: [productId], references: [id])

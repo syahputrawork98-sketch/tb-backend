@@ -5,7 +5,7 @@ import prisma from '../utils/prisma';
 export const getSummary = async (req: Request, res: Response) => {
   try {
     const transactions = await prisma.transaction.findMany({
-      include: { items: { include: { product: true } } }
+      include: { items: true } // We now have costPrice in items directly
     });
 
     let totalRevenue = 0;
@@ -14,15 +14,18 @@ export const getSummary = async (req: Request, res: Response) => {
     transactions.forEach(t => {
       totalRevenue += t.totalAmount;
       t.items.forEach(item => {
-        const costPrice = item.product.costPrice || 0;
-        totalProfit += (item.unitPrice - costPrice) * item.quantity;
+        const itemCost = item.costPrice || 0; // Use the snapshot!
+        totalProfit += (item.unitPrice - itemCost) * item.quantity;
       });
     });
 
+    // Unify threshold from Settings
+    const settings = await prisma.setting.findUnique({ where: { id: 1 } });
+    const threshold = settings?.lowStockThreshold || 10;
+
     const totalProducts = await prisma.product.count();
-    const lowStockThreshold = 10; // Can be fetched from settings if preferred
     const lowStockItems = await prisma.product.count({
-      where: { stock: { lt: lowStockThreshold } }
+      where: { stock: { lt: threshold } }
     });
 
     res.json({
